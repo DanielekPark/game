@@ -5,8 +5,8 @@ Project 4 - Phrase Hunter Game
 class Game {
   constructor() {
     (this.missed = 0),
-    (this.phrases = this.createPhrases()),
-    (this.activePhrase = null);
+      (this.phrases = this.createPhrases()),
+      (this.activePhrase = null);
   }
 
   /**
@@ -27,48 +27,80 @@ class Game {
   getRandomPhrase() {
     const randomNum = Math.floor(Math.random() * this.phrases.length);
     this.activePhrase = this.phrases[randomNum];
-    return this.activePhrase;
+    console.log(this.activePhrase.phrase.toLowerCase())
+    return this.activePhrase.phrase.toLowerCase();
   }
 
   // Begins game selects a random phrase & displaying it to user
-  startGame() { }
+  startGame() {
+    const overlay = document.querySelector("#overlay");
+    overlay.style.display = "none";
+    this.getRandomPhrase();
+    this.activePhrase.addPhraseToDisplay();
+    this.handleInteraction();
+    // console.log(this.activePhrase)
+  }
 
-  /* LISTEN FOR ON SCREEN KEYBOARD BUTTONS */
-  checkLetter() {
+  handleInteraction() {
     const ul = document.querySelector("#phrase ul");
-    const images = document.querySelectorAll('img'); 
     const listItems = [...ul.children];
-    const keyRows = document.querySelectorAll('.keyrow');
-    // listItems.forEach((li) => console.log(li.textContent)); 
-    //EVENT LISTENERS BUTTON CLICKS
+    const keyRows = document.querySelectorAll(".keyrow");
+
+    //EVENTLISTENERS BUTTON CLICKS
     keyRows.forEach((keyRow) => {
-      keyRow.addEventListener('click', (e) => {
+      keyRow.addEventListener("click", (e) => {
         const button = e.target;
-        if(button.tagName === 'BUTTON'){
-          if(!this.activePhrase.includes(button.textContent)){
-            this.removeLife(); 
-          }else{
-
-          }
-
-          button.disabled = true; 
+        if (button.tagName === "BUTTON") {
+          const letter = button.textContent;
+          console.log(letter)
+          this.activePhrase.checkLetter(letter);
+          //removes heart
+          if (!this.activePhrase.phrase.includes(letter.toLowerCase())) this.removeLife();
+          button.disabled = true;
+          this.checkForWin(listItems);
+          this.gameOver();
         }
-      })
-    })
+      });
+    });
   }
 
-  checkForWin (){
-
-  }
-
-  removeLife (){
-    this.missed++; 
-    if(this.missed > 5) return;
-    for(let i = 0; i < this.missed; i++){
-      images[i].src = 'images/lostHeart.png';
+  checkForWin(listItems) {
+    let counter = 0;
+    const strngLen = this.activePhrase.phrase
+      .split("")
+      .filter((char) => char !== " ")
+      .join("").length;
+      console.log(strngLen)
+    listItems.forEach((li) => {
+      if(li.classList.contains("show")) counter++;
+    });
+    console.log(counter)
+    if (counter === strngLen) {
+      const overlay = document.querySelector('#overlay'); 
+      const title = document.querySelector('.title');
+      const btn = document.querySelector('#btn_reset');
+      title.textContent = 'You Win!';
+      overlay.style.display = 'flex'; 
+      btn.textContent = 'Play again';
     }
   }
 
-  gameOver(){}
+  //removes a heart if the guess incorrect
+  removeLife() {
+    if (this.missed > 4) return;
+    this.missed++;
+    const images = document.querySelectorAll("img");
+    for (let i = 0; i < this.missed; i++) {
+      images[i].src = "images/lostHeart.png";
+    }
+  }
 
+  gameOver() {
+    if (this.missed > 4) {
+      const overlay = document.querySelector("#overlay");
+      const gameMessage = document.querySelector("#game-over-message");
+      overlay.style.display = "block";
+      gameMessage.textContent = "You have no hearts remaining play again.";
+    }
+  }
 }

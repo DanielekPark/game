@@ -2,16 +2,12 @@
 Treehouse FSJS Techdegree:
 Project 4 - Phrase Hunter Game
 ************************************************/
-const game = new Game(); 
-const randomPhrase = game.getRandomPhrase()
-const phrase = new Phrase(randomPhrase.phrase)
-phrase.addPhraseToDisplay(); 
+const btnReset = document.querySelector("#btn__reset");
 
-const overlay = document.querySelector("#overlay");
-const btnReset = document.querySelector('#btn__reset'); 
-overlay.style.display = 'none';
-// btnReset.addEventListener('click', () => {
-  
-// }); 
+btnReset.addEventListener("click", () => {
+  const game = new Game();
+  // const randomPhrase = game.getRandomPhrase();
+  // const phrase = new Phrase(randomPhrase.phrase);
 
-//step 7 pg 10
+  game.startGame();
+});

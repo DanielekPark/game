@@ -15,14 +15,27 @@ class Phrase {
       .split("")
       .map((letter) => {
         if (letter === " ") return `<li class="hide space">${letter}</li>`;
-        
         if (letter !== "") return `<li class="hide letter">${letter.toLowerCase()}</li>`;
-        
       });
       // console.log(phrase)
     ul.innerHTML = phrase.join(" ");
   }  
-//STEP 6 PART 2 
-// when a player matches the letter, it should use the css letter class. The space class should be used for empty spaces
-  showMatchedLetter(){}
+
+  showMatchedLetter(letter){
+    const ul = document.querySelector("#phrase ul");
+    const listItems = [...ul.children];
+    // console.log(letter)
+    listItems.forEach((li) => {
+      if(li.textContent === letter){
+        li.classList.add('show');
+        li.classList.remove('hide'); 
+      }
+    })
+  }
+
+  checkLetter(letter) {
+    if(this.phrase.toLowerCase().includes(letter.toLowerCase())){
+      this.showMatchedLetter(letter); 
+    }
+  }
 }
