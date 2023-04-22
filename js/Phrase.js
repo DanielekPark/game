@@ -4,7 +4,7 @@ Project 4 - Phrase Hunter Game
 ************************************************/
 class Phrase {
   constructor(phrase) {
-    this.phrase = phrase;
+    this.phrase = phrase.toLowerCase();
   }
 
   //displays letter placeholders to the display
@@ -17,14 +17,13 @@ class Phrase {
         if (letter === " ") return `<li class="hide space">${letter}</li>`;
         if (letter !== "") return `<li class="hide letter">${letter.toLowerCase()}</li>`;
       });
-      // console.log(phrase)
     ul.innerHTML = phrase.join(" ");
   }  
 
   showMatchedLetter(letter){
     const ul = document.querySelector("#phrase ul");
     const listItems = [...ul.children];
-    // console.log(letter)
+    console.log(letter)
     listItems.forEach((li) => {
       if(li.textContent === letter){
         li.classList.add('show');

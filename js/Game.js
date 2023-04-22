@@ -27,8 +27,7 @@ class Game {
   getRandomPhrase() {
     const randomNum = Math.floor(Math.random() * this.phrases.length);
     this.activePhrase = this.phrases[randomNum];
-    console.log(this.activePhrase.phrase.toLowerCase())
-    return this.activePhrase.phrase.toLowerCase();
+    // console.log(this.activePhrase)
   }
 
   // Begins game selects a random phrase & displaying it to user
@@ -38,7 +37,6 @@ class Game {
     this.getRandomPhrase();
     this.activePhrase.addPhraseToDisplay();
     this.handleInteraction();
-    // console.log(this.activePhrase)
   }
 
   handleInteraction() {
@@ -52,10 +50,10 @@ class Game {
         const button = e.target;
         if (button.tagName === "BUTTON") {
           const letter = button.textContent;
-          console.log(letter)
           this.activePhrase.checkLetter(letter);
           //removes heart
-          if (!this.activePhrase.phrase.includes(letter.toLowerCase())) this.removeLife();
+          if (!this.activePhrase.phrase.includes(letter.toLowerCase()))
+            this.removeLife();
           button.disabled = true;
           this.checkForWin(listItems);
           this.gameOver();
@@ -70,22 +68,20 @@ class Game {
       .split("")
       .filter((char) => char !== " ")
       .join("").length;
-      console.log(strngLen)
     listItems.forEach((li) => {
-      if(li.classList.contains("show")) counter++;
+      if (li.classList.contains("show")) counter++;
     });
-    console.log(counter)
     if (counter === strngLen) {
-      const overlay = document.querySelector('#overlay'); 
-      const title = document.querySelector('.title');
-      const btn = document.querySelector('#btn_reset');
-      title.textContent = 'You Win!';
-      overlay.style.display = 'flex'; 
-      btn.textContent = 'Play again';
+      const overlay = document.querySelector("#overlay");
+      const title = document.querySelector(".title");
+      const btn = document.querySelector("#btn__reset");
+      title.textContent = "You Win!";
+      overlay.style.display = "flex";
+      btn.textContent = "Play again";
     }
   }
 
-  //removes a heart if the guess incorrect
+  //removes a heart for an incorrect guess incorrect
   removeLife() {
     if (this.missed > 4) return;
     this.missed++;
@@ -99,7 +95,9 @@ class Game {
     if (this.missed > 4) {
       const overlay = document.querySelector("#overlay");
       const gameMessage = document.querySelector("#game-over-message");
-      overlay.style.display = "block";
+      const btn = document.querySelector("#btn__reset");
+      overlay.style.display = "flex";
+      btn.textContent = "Play again";
       gameMessage.textContent = "You have no hearts remaining play again.";
     }
   }
